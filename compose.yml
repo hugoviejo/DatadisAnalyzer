@@ -1,0 +1,68 @@
+services:
+  influxdb:
+    image: influxdb:2.7.5-alpine
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    expose:
+      - 8086:8086
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: "setup"
+      DOCKER_INFLUXDB_INIT_USERNAME: "admin"
+      DOCKER_INFLUXDB_INIT_PASSWORD: "adminpassword"
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "yLIwDgktURlg1binjiLr0t2pSExyRhI3GRj2CPdk78AZIF-6PvSntsjDye9AIqwmBC6nkqK-lpenlHzGT7MHWg=="
+      DOCKER_INFLUXDB_INIT_ORG: "ordus"
+      DOCKER_INFLUXDB_INIT_BUCKET: "datadis-analyzer"
+    #    volumes:
+    #      - influxdb_data:/var/lib/influxdb2
+    #      - influxdb_config:/etc/influxdb2
+    healthcheck:
+      test: [ "CMD", "influx", "ping" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    command: --reporting-disabled
+
+  environment-studio:
+    build: .
+    depends_on:
+      - influxdb
+    environment:
+      INPUT_PATH: "/data"
+      MEASUREPROCESSOR_SECONDS_BETWEEN_STATE_MEASURES: "1"
+      INFLUXDB_HOST: "influxdb"
+      INFLUXDB_PORT: "8086"
+      INFLUXDB_TOKEN: "yLIwDgktURlg1binjiLr0t2pSExyRhI3GRj2CPdk78AZIF-6PvSntsjDye9AIqwmBC6nkqK-lpenlHzGT7MHWg=="
+      INFLUXDB_ORG: "ordus"
+      INFLUXDB_BUCKET: "datadis-analyzer"
+    #      env_file: .env
+    volumes:
+      - ./target/test-classes/data:/data
+    links:
+      - influxdb
+
+  grafana:
+    image: grafana/grafana-oss:8.5.0
+    container_name: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - influxdb
+    environment:
+      GF_SECURITY_ADMIN_USER: "admin"
+      GF_SECURITY_ADMIN_PASSWORD: "admin"
+      INFLUXDB_HOST: "influxdb"
+      INFLUXDB_PORT: "8086"
+      INFLUXDB_TOKEN: "yLIwDgktURlg1binjiLr0t2pSExyRhI3GRj2CPdk78AZIF-6PvSntsjDye9AIqwmBC6nkqK-lpenlHzGT7MHWg=="
+      INFLUXDB_ORG: "ordus"
+      INFLUXDB_BUCKET: "datadis-analyzer"
+    volumes:
+      - ./Docker/grafana/provisioning:/etc/grafana/provisioning
+      - ./Docker/grafana/dashboards:/etc/grafana/dashboards
+    links:
+      - influxdb
+
+networks:
+  default:
+    driver: bridge
