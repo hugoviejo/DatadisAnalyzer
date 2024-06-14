@@ -8,7 +8,7 @@ trait DataStoreService {
   private val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   def storeData(datadisAnalyzerParams: DatadisAnalyzerParams, datadisResults: DatadisResults): Either[DatadisAnalyzerError, DatadisAnalyzerResult] = {
-    logger.info(s"Results: $datadisResults")
+    logger.info(s"Results:||$datadisResults")
 
     Right(DatadisAnalyzerResult(0, None))
   }

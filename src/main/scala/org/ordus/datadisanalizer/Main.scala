@@ -7,10 +7,10 @@ object Main {
   private val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}init")
+    logger.info("init")
     val analyzer = new DatadisAnalyzer()
     analyzer.launch
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}end")
+    logger.info("end")
     sys.exit(0)
   }
 }

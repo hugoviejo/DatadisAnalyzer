@@ -20,7 +20,7 @@ trait DatadisClient extends ApiClient {
    * @return The token
    */
   def login(datadisParams: DatadisParams): Either[DatadisAnalyzerError, Option[String]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Login")
+    logger.info("DATADIS - Login")
     executeRequest[String](s"${datadisParams.url}/nikola-auth/tokens/login?username=${datadisParams.user}&password=${datadisParams.password}",
       HttpMethods.POST, HttpEntity.Empty, "", datadisParams.proxyParams)
   }
@@ -33,7 +33,7 @@ trait DatadisClient extends ApiClient {
    * @return The list of supplies
    */
   def getSupplies(datadisParams: DatadisParams, token: String): Either[DatadisAnalyzerError, Option[List[Supply]]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Supplies")
+    logger.info("DATADIS - Get Supplies")
     executeRequest[List[Supply]](s"${datadisParams.url}/api-private/api/get-supplies",
       HttpMethods.GET, HttpEntity.Empty, token, datadisParams.proxyParams)
   }
@@ -49,7 +49,7 @@ trait DatadisClient extends ApiClient {
    */
   def getContractDetail(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String):
   Either[DatadisAnalyzerError, Option[List[Contract]]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Contract Detail")
+    logger.info("DATADIS - Get Contract Detail")
     executeRequest[List[Contract]](s"${datadisParams.url}/api-private/api/get-contract-detail?cups=$cups&distributorCode=$distributorCode",
       HttpMethods.GET, HttpEntity.Empty, token, datadisParams.proxyParams)
   }
@@ -69,7 +69,7 @@ trait DatadisClient extends ApiClient {
    */
   def getConsumptionData(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String, startDate: String, endDate: String,
                          measurementType: String, pointType: String): Either[DatadisAnalyzerError, Option[List[Consumption]]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Consumption Data")
+    logger.info("DATADIS - Get Consumption Data")
     executeRequest[List[Consumption]](s"${datadisParams.url}/api-private/api/get-consumption-data?cups=$cups&distributorCode=$distributorCode" +
       s"&startDate=$startDate&endDate=$endDate&measurementType=$measurementType&pointType=$pointType",
       HttpMethods.GET, HttpEntity.Empty, token, datadisParams.proxyParams)
@@ -88,7 +88,7 @@ trait DatadisClient extends ApiClient {
    */
   def getMaxPower(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String, startDate: String, endDate: String):
   Either[DatadisAnalyzerError, Option[List[MaxPower]]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Max Power")
+    logger.info("DATADIS - Get Max Power")
     executeRequest[List[MaxPower]](s"${datadisParams.url}/api-private/api/get-max-power?cups=$cups&distributorCode=$distributorCode" +
       s"&startDate=$startDate&endDate=$endDate",
       HttpMethods.GET, HttpEntity.Empty, token, datadisParams.proxyParams)
@@ -104,7 +104,7 @@ trait DatadisClient extends ApiClient {
    * @return The list of supplies
    */
   def getSuppliesV2(datadisParams: DatadisParams, token: String): Either[DatadisAnalyzerError, Option[SupplyV2Response]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Supplies V2")
+    logger.info("DATADIS - Get Supplies V2")
     executeRequest[SupplyV2Response](s"${datadisParams.url}/api-private/getSupplies",
       HttpMethods.GET, HttpEntity.Empty, token, datadisParams.proxyParams)
   }
@@ -120,7 +120,7 @@ trait DatadisClient extends ApiClient {
    */
   def getContractDetailV2(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String)
   : Either[DatadisAnalyzerError, Option[ContractV2Response]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Contract Detail V2")
+    logger.info("DATADIS - Get Contract Detail V2")
     val data = s"""{"cups":["$cups"],"distributor":"$distributorCode"}"""
     executeRequest[ContractV2Response](s"${datadisParams.url}/api-private/supply-data/contractual-data",
       HttpMethods.POST, HttpEntity(ContentTypes.`application/json`, data), token, datadisParams.proxyParams)
@@ -146,7 +146,7 @@ trait DatadisClient extends ApiClient {
   def getTimeCurveDataHours(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String, startDate: String, endDate: String,
                             measurementType: String, pointType: String, hasSelfConsumption: Boolean, provinceCode: String, accessFareCode: String,
                             selfConsumptionTypeCode: Option[String]): Either[DatadisAnalyzerError, Option[ConsumptionV2HourlyResponse]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Time Curve Data Hours")
+    logger.info("DATADIS - Get Time Curve Data Hours")
     val data =
       s"""{"fechaInicial":"$startDate","fechaFinal":"$endDate","cups":["$cups"],"distributor":"$distributorCode","fraccion":$measurementType,
          |"hasAutoConsumo":$hasSelfConsumption,"provinceCode":"$provinceCode","tarifaCode":"$accessFareCode","tipoPuntoMedida":$pointType,
@@ -179,7 +179,7 @@ trait DatadisClient extends ApiClient {
   def getTimeCurveDataWeek(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String, startDate: String, endDate: String,
                             measurementType: String, pointType: String, hasSelfConsumption: Boolean, provinceCode: String, accessFareCode: String,
                             selfConsumptionTypeCode: Option[String]): Either[DatadisAnalyzerError, Option[ConsumptionV2WeeklyResponse]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Time Curve Data Week")
+    logger.info("DATADIS - Get Time Curve Data Week")
     val data =
       s"""{"fechaInicial":"$startDate","fechaFinal":"$endDate","cups":["$cups"],"distributor":"$distributorCode","fraccion":$measurementType,
          |"hasAutoConsumo":$hasSelfConsumption,"provinceCode":"$provinceCode","tarifaCode":"$accessFareCode","tipoPuntoMedida":$pointType,
@@ -212,7 +212,7 @@ trait DatadisClient extends ApiClient {
   def getTimeCurveDataMonth(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String, startDate: String, endDate: String,
                             measurementType: String, pointType: String, hasSelfConsumption: Boolean, provinceCode: String, accessFareCode: String,
                             selfConsumptionTypeCode: Option[String]): Either[DatadisAnalyzerError, Option[ConsumptionV2MonthlyResponse]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Time Curve Data Month")
+    logger.info("DATADIS - Get Time Curve Data Month")
     val data =
       s"""{"fechaInicial":"$startDate","fechaFinal":"$endDate","cups":["$cups"],"distributor":"$distributorCode","fraccion":$measurementType,
          |"hasAutoConsumo":$hasSelfConsumption,"provinceCode":"$provinceCode","tarifaCode":"$accessFareCode","tipoPuntoMedida":$pointType,
@@ -239,7 +239,7 @@ trait DatadisClient extends ApiClient {
    */
   def getMaxPowerV2(datadisParams: DatadisParams, token: String, cups: String, distributorCode: String, startDate: String, endDate: String):
   Either[DatadisAnalyzerError, Option[MaxPowerV2Response]] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}DATADIS - Get Max Power v2")
+    logger.info("DATADIS - Get Max Power v2")
     val data =
       s"""{"fechaInicial":"$startDate","fechaFinal":"$endDate","cups":["$cups"],"distributor":"$distributorCode"}""".stripMargin
     executeRequest[MaxPowerV2Response](s"${datadisParams.url}/api-private/supply-data/max-power",

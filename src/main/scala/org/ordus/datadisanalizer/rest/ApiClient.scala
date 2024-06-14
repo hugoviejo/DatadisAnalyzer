@@ -30,7 +30,7 @@ trait ApiClient {
   def executeRequest[T](url: String, method: HttpMethod, body: RequestEntity, token: String, proxyParams: Option[ProxyParams])
                        (implicit um: Unmarshaller[HttpResponse, T]): Either[DatadisAnalyzerError, Option[T]] = {
     val uri = Uri(url)
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}Executing request for: ${uri.path}")
+    logger.info(s"Executing request for: ${uri.path}")
     Try {
       val trustSslContext: SSLContext = {
         object NoCheckX509TrustManager extends X509TrustManager {
@@ -69,13 +69,13 @@ trait ApiClient {
               Duration(DatadisAnalyzerConstants.HttpRequestTimeoutSeconds, TimeUnit.SECONDS))
           } match {
             case Success(resultValue) =>
-              logger.debug(s"${DatadisAnalyzerConstants.LogPrefix}Result: $resultValue")
+              logger.debug(s"Result:||$resultValue")
               Right(Some(resultValue))
             case Failure(exception) => Left(HttpError(s"Error unmarshalling response", ErrorCodeConstants.HttpResponseUnmarshalError, Some(exception)))
           }
         } else {
           val resultValue = Await.result(Unmarshal(response).to[String], Duration(DatadisAnalyzerConstants.HttpRequestTimeoutSeconds, TimeUnit.SECONDS))
-          logger.debug(s"${DatadisAnalyzerConstants.LogPrefix}Result: $resultValue")
+          logger.debug(s"Result:||$resultValue")
           if (response.status == StatusCodes.NotFound) {
             Right(None)
           } else {

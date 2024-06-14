@@ -5,8 +5,8 @@ version := "0.1.0"
 scalaVersion := "2.13.8"
 enablePlugins(PackPlugin)
 
-val log4jVersion = "2.22.1"
-val sf4jVersion = "2.0.11"
+val log4jVersion = "2.23.1"
+val sf4jVersion = "2.0.13"
 val typesafeConfigVersion = "1.4.3"
 val akkaVersion = "2.7.0"
 val akkaHttpVersion = "10.5.2"
@@ -19,7 +19,6 @@ val commonsLangVersion = "3.14.0"
 libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4jVersion,
   "org.apache.logging.log4j" % "log4j-core" % log4jVersion,
-  "org.slf4j" % "slf4j-api" % sf4jVersion,
   "org.slf4j" % "slf4j-log4j12" % sf4jVersion,
   "com.typesafe" % "config" % typesafeConfigVersion,
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,

@@ -7,6 +7,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model._
 import org.ordus.datadisanalizer.DatadisAnalyzerUnitSpec
 import org.ordus.datadisanalizer.constants.ErrorCodeConstants
+import org.slf4j.LoggerFactory
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
 
@@ -125,6 +126,7 @@ class ApiClientTest extends DatadisAnalyzerUnitSpec {
         val result = client.executeRequest(s"http://badhost_bad/bad", HttpMethods.POST, HttpEntity("content"), "", None)
 
         result shouldBe a[Left[_, _]]
+        val logger = LoggerFactory.getLogger(classOf[ApiClient])
         result.left.get.code shouldBe ErrorCodeConstants.HttpError
       }
     }

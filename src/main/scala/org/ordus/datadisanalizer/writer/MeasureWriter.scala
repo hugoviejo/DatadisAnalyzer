@@ -22,8 +22,8 @@ trait MeasureWriter {
    * @return the number of measures written
    */
   def writeMeasures(environmentStudioParams: DatadisAnalyzerParams, measures: Seq[ExecutionMeasure]): Either[DatadisAnalyzerError, Int] = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}Writing ${measures.size} measures")
-    //logger.info(s"${EnvironmentStudioConstants.LogPrefix}Writing ${measures.size} measures: $measures")
+    logger.info(s"Writing ${measures.size} measures")
+    //logger.info(s"Writing ${measures.size} measures: $measures")
     getInfluxApi(environmentStudioParams.measureWriterParams) match {
       case Right(writerApi) =>
         Try {
@@ -48,7 +48,7 @@ trait MeasureWriter {
    */
   private[writer] def getInfluxApi(measureWriterParams: MeasureWriterParams): Either[DatadisAnalyzerError, WriteApiBlocking] = {
     val connectionString = s"http://${measureWriterParams.influxdbHost}:${measureWriterParams.influxdbPort}"
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}InfluxDB connection string: $connectionString")
+    logger.info(s"InfluxDB connection string:||$connectionString")
     val dbOptions: InfluxDBClientOptions = InfluxDBClientOptions.builder().connectionString(connectionString).org(measureWriterParams.influxdbOrg)
       .bucket(measureWriterParams.influxdbBucket).authenticateToken(measureWriterParams.influxdbToken.toCharArray).build
     val influxDBClient = InfluxDBClientFactory.create(dbOptions)

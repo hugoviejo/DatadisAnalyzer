@@ -21,13 +21,13 @@ class DatadisAnalyzer extends DataRetrieverService with DataStoreService {
    * @return the return code
    */
   def launch: Int = {
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}Launch Datadis Analyzer")
+    logger.info("Launch Datadis Analyzer")
     val result = getConfig match {
       case Right(config) => executeAnalyzer(config)
       case Left(error) => Left(error)
     }
 
-    logger.info(s"${DatadisAnalyzerConstants.LogPrefix}Datadis Analyzer result: $result")
+    logger.info(s"Datadis Analyzer result:||$result")
     //TODO Handler result
     0
   }
@@ -42,7 +42,7 @@ class DatadisAnalyzer extends DataRetrieverService with DataStoreService {
       ConfigFactory.parseResources(DatadisAnalyzerConstants.ReferenceConfFileName).resolve()
     } match {
       case Success(config) =>
-        logger.info(s"${DatadisAnalyzerConstants.LogPrefix}config: $config")
+        logger.info(s"config:||$config")
         Right(config)
       case Failure(exception) => Left(ConfigReadError(s"Error reading config file: ${exception.getMessage}", ErrorCodeConstants.ConfigFileError,
         Some(exception)))
